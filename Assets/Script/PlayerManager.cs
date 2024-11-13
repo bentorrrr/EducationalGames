@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -8,17 +9,34 @@ public class PlayerManager : MonoBehaviour
 	private GameObject playerInstance;
 
 	public bool isMoving = false;
-	public float moveSpeed = 5f; // Speed of player movement
+	public float moveSpeed = 5f;
 	public int playerScore = 0;
 
 	public TextMeshProUGUI scoreText;
+	public GameObject levelCompleteWindow;
+	public TextMeshProUGUI finalScoreText;
+	public TextMeshProUGUI pathText;
+	public GameObject levelFailedWindow;
+	public TextMeshProUGUI weightUsedText;
+	public TextMeshProUGUI weightLimitText;
 
 	private GraphData graphData;
+	private List<int> visitedNodes = new List<int>();
+	private List<int> pathTaken = new List<int>();
+
+	private bool isGameCompleted = false;
+
+	void Awake()
+	{
+		graphData = FindObjectOfType<LevelManager>().graphData;
+	}
 
 	void Start()
 	{
-		graphData = FindObjectOfType<LevelManager>().graphData;
 		UpdateScoreText();
+
+		if (levelCompleteWindow != null) levelCompleteWindow.SetActive(false);
+		if (levelFailedWindow != null) levelFailedWindow.SetActive(false);
 	}
 
 	public void SpawnPlayerAt(Vector3 position)
@@ -32,12 +50,19 @@ public class PlayerManager : MonoBehaviour
 		{
 			playerInstance.transform.position = position;
 		}
+
+		int startNodeId = GetClosestNodeId(position);
+		if (startNodeId != -1 && !visitedNodes.Contains(startNodeId))
+		{
+			visitedNodes.Add(startNodeId);
+			pathTaken.Add(startNodeId);
+		}
 	}
 
 	public void MoveToNode(NodeComponent targetNode)
 	{
 		// Check if player is already moving
-		if (isMoving)
+		if (isMoving || isGameCompleted)
 			return;
 
 		// Get the current node's ID based on player's current position
@@ -81,9 +106,36 @@ public class PlayerManager : MonoBehaviour
 		UpdateScoreText();
 		Debug.Log("Player score: " + playerScore);
 
+		if (!visitedNodes.Contains(targetNode.nodeId))
+		{
+			visitedNodes.Add(targetNode.nodeId);
+		}
+
+		pathTaken.Add(targetNode.nodeId);
+
+		if (!isGameCompleted)
+		{
+			if (playerScore > graphData.weightLimit)
+			{
+				DisplayLevelFailed();
+			}
+			else
+			{
+				CheckWinCondition(targetNode.nodeId);
+			}
+		}
+
 		isMoving = false;
 	}
 
+	private void CheckWinCondition(int currentNodeId)
+	{
+		// Check if the player has visited all nodes and returned to the start
+		if (visitedNodes.Count == graphData.nodes.Count && currentNodeId == visitedNodes[0])
+		{
+			DisplayLevelComplete();
+		}
+	}
 
 	private int GetClosestNodeId(Vector3 position)
 	{
@@ -121,6 +173,28 @@ public class PlayerManager : MonoBehaviour
 		if (scoreText != null)
 		{
 			scoreText.text = "Score: " + playerScore.ToString();  // Update the score text
+		}
+	}
+
+	private void DisplayLevelComplete()
+	{
+		if (!isGameCompleted && levelCompleteWindow != null)
+		{
+			isGameCompleted = true;
+			levelCompleteWindow.SetActive(true);
+			finalScoreText.text = "Final Score: " + playerScore;
+			pathText.text = "Path Taken: " + string.Join(" -> ", pathTaken);
+		}
+	}
+
+	private void DisplayLevelFailed()
+	{
+		if (!isGameCompleted && levelFailedWindow != null)
+		{
+			isGameCompleted = true; // Mark the game as completed
+			levelFailedWindow.SetActive(true);
+			weightUsedText.text = "Weight Used: " + playerScore;
+			weightLimitText.text = "Weight Limit: " + graphData.weightLimit;
 		}
 	}
 }

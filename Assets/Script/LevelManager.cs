@@ -84,6 +84,7 @@ public class LevelManager : MonoBehaviour
 	{
 		if (graphData.nodes.Count > 0)
 		{
+			Debug.Log("Ya");
 			Vector3 startPosition = graphData.nodes[0].position;  // Get the first node's position
 			playerManager.SpawnPlayerAt(startPosition);           // Spawn the player at the first node
 		}

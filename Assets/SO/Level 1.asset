@@ -32,3 +32,4 @@ MonoBehaviour:
   - startNodeId: 3
     endNodeId: 1
     weight: 2
+  weightLimit: 10
