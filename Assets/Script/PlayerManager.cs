@@ -24,6 +24,8 @@ public class PlayerManager : MonoBehaviour
 	private List<int> visitedNodes = new List<int>();
 	private List<int> pathTaken = new List<int>();
 
+	private bool isGameCompleted = false;
+
 	void Awake()
 	{
 		graphData = FindObjectOfType<LevelManager>().graphData;
@@ -60,7 +62,7 @@ public class PlayerManager : MonoBehaviour
 	public void MoveToNode(NodeComponent targetNode)
 	{
 		// Check if player is already moving
-		if (isMoving)
+		if (isMoving || isGameCompleted)
 			return;
 
 		// Get the current node's ID based on player's current position
@@ -111,18 +113,19 @@ public class PlayerManager : MonoBehaviour
 
 		pathTaken.Add(targetNode.nodeId);
 
-		CheckWeightLimit();
-		CheckWinCondition(targetNode.nodeId);
+		if (!isGameCompleted)
+		{
+			if (playerScore > graphData.weightLimit)
+			{
+				DisplayLevelFailed();
+			}
+			else
+			{
+				CheckWinCondition(targetNode.nodeId);
+			}
+		}
 
 		isMoving = false;
-	}
-
-	private void CheckWeightLimit()
-	{
-		if (playerScore > graphData.weightLimit)
-		{
-			DisplayLevelFailed();
-		}
 	}
 
 	private void CheckWinCondition(int currentNodeId)
@@ -175,26 +178,20 @@ public class PlayerManager : MonoBehaviour
 
 	private void DisplayLevelComplete()
 	{
-		if (levelCompleteWindow != null)
+		if (!isGameCompleted && levelCompleteWindow != null)
 		{
-			levelCompleteWindow.SetActive(true);  // Show the "level complete" window
-
-			if (finalScoreText != null)
-			{
-				finalScoreText.text = "Weight Used: " + playerScore;
-			}
-
-			if (pathText != null)
-			{
-				pathText.text = "Path Taken:<br>" + string.Join(" -> ", pathTaken);
-			}
+			isGameCompleted = true;
+			levelCompleteWindow.SetActive(true);
+			finalScoreText.text = "Final Score: " + playerScore;
+			pathText.text = "Path Taken: " + string.Join(" -> ", pathTaken);
 		}
 	}
 
 	private void DisplayLevelFailed()
 	{
-		if (levelFailedWindow != null)
+		if (!isGameCompleted && levelFailedWindow != null)
 		{
+			isGameCompleted = true; // Mark the game as completed
 			levelFailedWindow.SetActive(true);
 			weightUsedText.text = "Weight Used: " + playerScore;
 			weightLimitText.text = "Weight Limit: " + graphData.weightLimit;
