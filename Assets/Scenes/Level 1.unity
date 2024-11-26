@@ -575,9 +575,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1399ce2b57f9ad7498e5eb8c36c7698d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  graphData: {fileID: 11400000, guid: 8ff0a5ac8c810b54a98bbd6d389520d1, type: 2}
-  nodePrefab: {fileID: 7130828414727599401, guid: 6fd58be03be91d24ea666a73b5e49919, type: 3}
+  graphData: {fileID: 11400000, guid: 2adf1f5abe0e69041b3b4253c2b52987, type: 2}
   playerManager: {fileID: 1126510274}
+  normalNodePrefab: {fileID: 7130828414727599401, guid: 6fd58be03be91d24ea666a73b5e49919, type: 3}
+  blueSpecialNodePrefab: {fileID: 7130828414727599401, guid: 81a48021f8e13e947a1d94d6a0df108b, type: 3}
+  orangeSpecialNodePrefab: {fileID: 7130828414727599401, guid: d305dbb121bfd0a4ba6a508097162637, type: 3}
   weight1Sprite: {fileID: 21300000, guid: f64fe4dd65e939a43b87d31183fd8016, type: 3}
   weight2Sprite: {fileID: 21300000, guid: cb59ec3a4ca91e94ba892b6201979a46, type: 3}
   weight3Sprite: {fileID: 21300000, guid: 7c50ca1344082f94db4ecfc87475a30a, type: 3}
@@ -1019,7 +1021,8 @@ MonoBehaviour:
   playerPrefab: {fileID: 6995674866952885819, guid: b767d26dc010fef4a96de90a138547c1, type: 3}
   isMoving: 0
   moveSpeed: 5
-  playerScore: 0
+  totalWeightUsed: 0
+  currentOrder: 0
   scoreText: {fileID: 1877984268}
   levelCompleteWindow: {fileID: 42479770}
   finalScoreText: {fileID: 136298098}

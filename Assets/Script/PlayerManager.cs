@@ -9,8 +9,9 @@ public class PlayerManager : MonoBehaviour
 	private GameObject playerInstance;
 
 	public bool isMoving = false;
-	public float moveSpeed = 5f;
-	public int playerScore = 0;
+	public float moveSpeed = 10f;
+	public int totalWeightUsed = 0;
+	public int currentOrder = 0;
 
 	public TextMeshProUGUI scoreText;
 	public GameObject levelCompleteWindow;
@@ -100,11 +101,12 @@ public class PlayerManager : MonoBehaviour
 		}
 
 		playerInstance.transform.position = targetPosition; // Ensure the player reaches the exact target position
-		Debug.Log("Player reached the target node");
+		currentOrder = pathTaken.Count;
 
-		playerScore += edgeWeight; // Update the player's score based on edge weight
+		totalWeightUsed += edgeWeight; // Update the player's score based on edge weight
+		AdjustWeightForSpecialNodes(targetNode.nodeId, currentOrder);
 		UpdateScoreText();
-		Debug.Log("Player score: " + playerScore);
+		Debug.Log("Player score: " + totalWeightUsed);
 
 		if (!visitedNodes.Contains(targetNode.nodeId))
 		{
@@ -115,7 +117,7 @@ public class PlayerManager : MonoBehaviour
 
 		if (!isGameCompleted)
 		{
-			if (playerScore > graphData.weightLimit)
+			if (totalWeightUsed > graphData.weightLimit)
 			{
 				DisplayLevelFailed();
 			}
@@ -126,6 +128,13 @@ public class PlayerManager : MonoBehaviour
 		}
 
 		isMoving = false;
+
+		LevelManager levelManager = FindObjectOfType<LevelManager>();
+		if (levelManager != null)
+		{
+			Debug.Log("levelmanager");
+			levelManager.CheckAndRevertSpecialNodes(currentOrder);
+		}
 	}
 
 	private void CheckWinCondition(int currentNodeId)
@@ -134,6 +143,33 @@ public class PlayerManager : MonoBehaviour
 		if (visitedNodes.Count == graphData.nodes.Count && currentNodeId == visitedNodes[0])
 		{
 			DisplayLevelComplete();
+		}
+	}
+
+	private void AdjustWeightForSpecialNodes(int targetNodeId, int currentOrder)
+	{
+		NodeData targetNode = graphData.nodes.Find(n => n.nodeId == targetNodeId);
+
+		if (targetNode != null)
+		{
+			switch (targetNode.nodeType)
+			{
+				case NodeType.BlueSpecial: // Blue Node C
+					if (currentOrder == 2)
+					{
+						Debug.Log($"Blue Special Node reached at order {currentOrder}. Reducing total weight by 2.");
+						totalWeightUsed = Mathf.Max(totalWeightUsed - 2, 0); // Ensure total weight is non-negative
+					}
+					break;
+
+				case NodeType.OrangeSpecial: // Orange Node E
+					if (currentOrder == 5)
+					{
+						Debug.Log($"Orange Special Node reached at order {currentOrder}. Reducing total weight by 4.");
+						totalWeightUsed = Mathf.Max(totalWeightUsed - 4, 0); // Ensure total weight is non-negative
+					}
+					break;
+			}
 		}
 	}
 
@@ -172,7 +208,7 @@ public class PlayerManager : MonoBehaviour
 	{
 		if (scoreText != null)
 		{
-			scoreText.text = "Score: " + playerScore.ToString();  // Update the score text
+			scoreText.text = "Score: " + totalWeightUsed.ToString();  // Update the score text
 		}
 	}
 
@@ -182,8 +218,10 @@ public class PlayerManager : MonoBehaviour
 		{
 			isGameCompleted = true;
 			levelCompleteWindow.SetActive(true);
-			finalScoreText.text = "Final Score: " + playerScore;
+			finalScoreText.text = "Final Score: " + totalWeightUsed;
 			pathText.text = "Path Taken: " + string.Join(" -> ", pathTaken);
+			int stars = CalculateStars();
+			Debug.Log("Stars Earned: " + stars);
 		}
 	}
 
@@ -193,8 +231,20 @@ public class PlayerManager : MonoBehaviour
 		{
 			isGameCompleted = true; // Mark the game as completed
 			levelFailedWindow.SetActive(true);
-			weightUsedText.text = "Weight Used: " + playerScore;
+			weightUsedText.text = "Weight Used: " + totalWeightUsed;
 			weightLimitText.text = "Weight Limit: " + graphData.weightLimit;
 		}
+	}
+
+	private int CalculateStars()
+	{
+		if (totalWeightUsed <= graphData.threeStarWeight)
+			return 3;
+		else if (totalWeightUsed <= graphData.twoStarWeight)
+			return 2;
+		else if (totalWeightUsed <= graphData.oneStarWeight)
+			return 1;
+		else
+			return 0;
 	}
 }
