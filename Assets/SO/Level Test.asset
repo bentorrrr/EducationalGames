@@ -10,41 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e07c38f6262a75468fdb66209e5d4f6, type: 3}
-  m_Name: Level 1
+  m_Name: Level Test
   m_EditorClassIdentifier: 
   nodes:
   - nodeName: A
-    nodeId: 0
-    position: {x: -8, y: 5}
-  - nodeName: B
     nodeId: 1
-    position: {x: -8, y: -5}
-  - nodeName: C
+    position: {x: 0, y: 0}
+  - nodeName: B
     nodeId: 2
     position: {x: 8, y: 5}
-  - nodeName: D
+  - nodeName: C
     nodeId: 3
-    position: {x: 8, y: -5}
+    position: {x: -8, y: -5}
   edges:
-  - startNodeId: 0
-    endNodeId: 1
-    weight: 1
-  - startNodeId: 0
-    endNodeId: 2
-    weight: 2
-  - startNodeId: 0
-    endNodeId: 3
-    weight: 1
   - startNodeId: 1
     endNodeId: 2
-    weight: 1
-  - startNodeId: 1
-    endNodeId: 3
-    weight: 2
+    weight: 3
   - startNodeId: 2
     endNodeId: 3
     weight: 1
-  weightLimit: 5
-  oneStarWeight: 1
-  twoStarWeight: 1
-  threeStarWeight: 4
+  - startNodeId: 3
+    endNodeId: 1
+    weight: 2
+  weightLimit: 10

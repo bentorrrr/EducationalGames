@@ -6,5 +6,8 @@ public class GraphData : ScriptableObject
 {
 	public List<NodeData> nodes;  // List of nodes in the graph
 	public List<EdgeData> edges;  // List of edges connecting nodes
+	public int threeStarWeight;
+	public int twoStarWeight;
+	public int oneStarWeight;
 	public int weightLimit;
 }
