@@ -9,7 +9,9 @@ public class LevelManager : MonoBehaviour
 	// Prefabs for different node types
 	public GameObject normalNodePrefab;
 	public GameObject blueSpecialNodePrefab;
+	public GameObject greenSpecialNodePrefab;
 	public GameObject orangeSpecialNodePrefab;
+	public GameObject purpleSpecialNodePrefab;
 
 	private Dictionary<int, GameObject> nodeInstances;
 
@@ -126,7 +128,9 @@ public class LevelManager : MonoBehaviour
 		{
 			case NodeType.Normal: return normalNodePrefab;
 			case NodeType.BlueSpecial: return blueSpecialNodePrefab;
+			case NodeType.GreenSpecial: return greenSpecialNodePrefab;
 			case NodeType.OrangeSpecial: return orangeSpecialNodePrefab;
+			case NodeType.PurpleSpecial: return purpleSpecialNodePrefab;
 			default:
 				Debug.LogError($"Unknown NodeType: {nodeType}");
 				return null;
@@ -196,9 +200,19 @@ public class LevelManager : MonoBehaviour
 				Debug.Log("Blue");
 				ConvertNodeToPrefab(node.nodeId, NodeType.Normal);
 			}
+			else if (node.nodeType == NodeType.GreenSpecial && currentOrder >= 4)
+			{
+				Debug.Log("Green");
+				ConvertNodeToPrefab(node.nodeId, NodeType.Normal);
+			}
 			else if (node.nodeType == NodeType.OrangeSpecial && currentOrder >= 5)
 			{
 				Debug.Log("Orange");
+				ConvertNodeToPrefab(node.nodeId, NodeType.Normal);
+			}
+			else if (node.nodeType == NodeType.PurpleSpecial && currentOrder >= 6)
+			{
+				Debug.Log("Purple");
 				ConvertNodeToPrefab(node.nodeId, NodeType.Normal);
 			}
 		}

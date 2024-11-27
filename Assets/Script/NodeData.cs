@@ -3,8 +3,10 @@ using UnityEngine;
 public enum NodeType
 {
 	Normal,
-	BlueSpecial,  // C (Blue)
-	OrangeSpecial // E (Orange)
+	BlueSpecial,
+	GreenSpecial,
+	OrangeSpecial,
+	PurpleSpecial
 }
 
 [System.Serializable]
