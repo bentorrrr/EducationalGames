@@ -134,6 +134,7 @@ public class PlayerManager : MonoBehaviour
 		{
 			Debug.Log("levelmanager");
 			levelManager.CheckAndRevertSpecialNodes(currentOrder);
+			levelManager.MarkNodeAsVisited(targetNode.nodeId);
 		}
 	}
 

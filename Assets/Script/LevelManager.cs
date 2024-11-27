@@ -45,6 +45,16 @@ public class LevelManager : MonoBehaviour
                 nodeComponent.Initialize(node.nodeId, node.nodeName, node.nodeType);
             }
 
+			Transform chestIndicator = nodeObject.transform.Find("ChestIndicator");
+			if (chestIndicator != null)
+			{
+				SpriteRenderer chestRenderer = chestIndicator.GetComponent<SpriteRenderer>();
+				if (chestRenderer != null)
+				{
+					chestRenderer.enabled = true; // Ensure it's visible initially
+				}
+			}
+
 			nodeInstances[node.nodeId] = nodeObject;
 		}
 
@@ -82,17 +92,6 @@ public class LevelManager : MonoBehaviour
 
         lineRenderer.sortingLayerID = SortingLayer.NameToID("Lines");
     }
-
-	//float GetLineWidthByWeight(int weight)
-	//{
-	//	switch (weight)
-	//	{
-	//		case 1: return 0.3f; // Thin line
-	//		case 2: return 0.3f;  // Medium line
-	//		case 3: return 0.3f; // Thick line
-	//		default: return 0.2f; // Default width
-	//	}
-	//}
 
 	Color GetLineColorByWeight(int weight)
 	{
@@ -218,6 +217,26 @@ public class LevelManager : MonoBehaviour
 				Debug.Log("Purple");
 				ConvertNodeToPrefab(node.nodeId, NodeType.Normal);
 			}
+		}
+	}
+
+	public void MarkNodeAsVisited(int nodeId)
+	{
+		if (nodeInstances.TryGetValue(nodeId, out GameObject nodeObject))
+		{
+			Transform chestIndicator = nodeObject.transform.Find("ChestIndicator");
+			if (chestIndicator != null)
+			{
+				SpriteRenderer chestRenderer = chestIndicator.GetComponent<SpriteRenderer>();
+				if (chestRenderer != null)
+				{
+					chestRenderer.enabled = false; // Hide the chest sprite
+				}
+			}
+		}
+		else
+		{
+			Debug.LogError($"Node with ID {nodeId} not found for marking as visited.");
 		}
 	}
 }
