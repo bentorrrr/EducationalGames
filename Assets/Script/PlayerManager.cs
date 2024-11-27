@@ -224,7 +224,7 @@ public class PlayerManager : MonoBehaviour
 	{
 		if (scoreText != null)
 		{
-			scoreText.text = "Score: " + totalWeightUsed.ToString();  // Update the score text
+			scoreText.text = "Total Distance" + "\n" + totalWeightUsed.ToString();  // Update the score text
 		}
 	}
 

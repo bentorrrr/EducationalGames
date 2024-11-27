@@ -15,18 +15,23 @@ MonoBehaviour:
   nodes:
   - nodeName: A
     nodeId: 0
+    nodeType: 0
     position: {x: -7, y: 1.3}
   - nodeName: B
     nodeId: 1
+    nodeType: 0
     position: {x: -4.2, y: -7}
   - nodeName: C
     nodeId: 2
-    position: {x: 0, y: 6.7}
+    nodeType: 0
+    position: {x: 0, y: 5.5}
   - nodeName: D
     nodeId: 3
+    nodeType: 0
     position: {x: 7, y: 1.3}
   - nodeName: E
     nodeId: 4
+    nodeType: 0
     position: {x: 4.2, y: -7}
   edges:
   - startNodeId: 0

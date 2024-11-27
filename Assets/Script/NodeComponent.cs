@@ -21,6 +21,7 @@ public class NodeComponent : MonoBehaviour
 
 	void OnMouseDown()
 	{
+		Debug.Log("Mouse Clicked");
 		if (playerManager != null)
 		{
 			Debug.Log("Node clicked, attempting to move to node");

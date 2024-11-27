@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-	public GraphData graphData;
-	public PlayerManager playerManager;
+    public GraphData graphData;
+    public PlayerManager playerManager;
 
 	// Prefabs for different node types
 	public GameObject normalNodePrefab;
@@ -15,34 +15,35 @@ public class LevelManager : MonoBehaviour
 
 	private Dictionary<int, GameObject> nodeInstances;
 
-	void Start()
-	{
-		InitializeGraph();
-		SpawnPlayerAtFirstNode();
-	}
+    void Start()
+    {
+        InitializeGraph();
+        SpawnPlayerAtFirstNode();
+    }
 
-	void InitializeGraph()
-	{
-		nodeInstances = new Dictionary<int, GameObject>();
 
-		// Instantiate nodes
-		foreach (var node in graphData.nodes)
-		{
-			GameObject nodePrefab = GetPrefabForNodeType(node.nodeType);
-			if (nodePrefab == null)
-			{
-				Debug.LogError($"Prefab not assigned for node type: {node.nodeType}");
-				continue;
-			}
+    void InitializeGraph()
+    {
+        nodeInstances = new Dictionary<int, GameObject>();
 
-			GameObject nodeObject = Instantiate(nodePrefab, node.position, Quaternion.identity);
-			nodeObject.name = $"Node_{node.nodeName}";
+        // Instantiate nodes
+        foreach (var node in graphData.nodes)
+        {
+            GameObject nodePrefab = GetPrefabForNodeType(node.nodeType);
+            if (nodePrefab == null)
+            {
+                Debug.LogError($"Prefab not assigned for node type: {node.nodeType}");
+                continue;
+            }
 
-			NodeComponent nodeComponent = nodeObject.GetComponent<NodeComponent>();
-			if (nodeComponent != null)
-			{
-				nodeComponent.Initialize(node.nodeId, node.nodeName, node.nodeType);
-			}
+            GameObject nodeObject = Instantiate(nodePrefab, node.position, Quaternion.identity);
+            nodeObject.name = $"Node_{node.nodeName}";
+
+            NodeComponent nodeComponent = nodeObject.GetComponent<NodeComponent>();
+            if (nodeComponent != null)
+            {
+                nodeComponent.Initialize(node.nodeId, node.nodeName, node.nodeType);
+            }
 
 			nodeInstances[node.nodeId] = nodeObject;
 		}
@@ -53,7 +54,7 @@ public class LevelManager : MonoBehaviour
 			if (nodeInstances.TryGetValue(edge.startNodeId, out GameObject startNode) &&
 				nodeInstances.TryGetValue(edge.endNodeId, out GameObject endNode))
 			{
-				CreateEdge(startNode.transform.position, endNode.transform.position, edge.weight);
+                CreateEdge(startNode.transform.position, endNode.transform.position, edge.weight);
 			}
 		}
 	}
@@ -72,24 +73,26 @@ public class LevelManager : MonoBehaviour
 		lineRenderer.SetPosition(0, start); // Start point
 		lineRenderer.SetPosition(1, end);   // End point
 
-		lineRenderer.startWidth = GetLineWidthByWeight(weight); // Width at the start of the line
-		lineRenderer.endWidth = GetLineWidthByWeight(weight);   // Width at the end of the line
+        lineRenderer.startWidth = 0.3f; //GetLineWidthByWeight(weight); // Width at the start of the line
+        lineRenderer.endWidth = 0.3f; //GetLineWidthByWeight(weight);   // Width at the end of the line
 
 		lineRenderer.material = new Material(Shader.Find("Sprites/Default")); // Assign a default material
 		lineRenderer.startColor = GetLineColorByWeight(weight); // Color at the start
 		lineRenderer.endColor = GetLineColorByWeight(weight);   // Color at the end
-	}
 
-	float GetLineWidthByWeight(int weight)
-	{
-		switch (weight)
-		{
-			case 1: return 0.2f; // Thin line
-			case 2: return 0.3f;  // Medium line
-			case 3: return 0.4f; // Thick line
-			default: return 0.2f; // Default width
-		}
-	}
+        lineRenderer.sortingLayerID = SortingLayer.NameToID("Lines");
+    }
+
+	//float GetLineWidthByWeight(int weight)
+	//{
+	//	switch (weight)
+	//	{
+	//		case 1: return 0.3f; // Thin line
+	//		case 2: return 0.3f;  // Medium line
+	//		case 3: return 0.3f; // Thick line
+	//		default: return 0.2f; // Default width
+	//	}
+	//}
 
 	Color GetLineColorByWeight(int weight)
 	{
@@ -137,58 +140,58 @@ public class LevelManager : MonoBehaviour
 		}
 	}
 
-	void SpawnPlayerAtFirstNode()
-	{
-		if (graphData.nodes.Count > 0)
-		{
-			Vector3 startPosition = graphData.nodes[0].position; // Get the first node's position
-			playerManager.SpawnPlayerAt(startPosition);         // Spawn the player at the first node
-		}
-		else
-		{
-			Debug.LogWarning("No nodes in graphData to spawn the player at.");
-		}
-	}
+    void SpawnPlayerAtFirstNode()
+    {
+        if (graphData.nodes.Count > 0)
+        {
+            Vector3 startPosition = graphData.nodes[0].position; // Get the first node's position
+            playerManager.SpawnPlayerAt(startPosition);         // Spawn the player at the first node
+        }
+        else
+        {
+            Debug.LogWarning("No nodes in graphData to spawn the player at.");
+        }
+    }
 
-	public void ConvertNodeToPrefab(int nodeId, NodeType newType)
-	{
-		if (!nodeInstances.TryGetValue(nodeId, out GameObject currentNode))
-		{
-			Debug.LogError($"Node with ID {nodeId} not found for conversion.");
-			return;
-		}
+    public void ConvertNodeToPrefab(int nodeId, NodeType newType)
+    {
+        if (!nodeInstances.TryGetValue(nodeId, out GameObject currentNode))
+        {
+            Debug.LogError($"Node with ID {nodeId} not found for conversion.");
+            return;
+        }
 
-		// Get the new prefab based on the desired type
-		GameObject newPrefab = GetPrefabForNodeType(newType);
-		if (newPrefab == null)
-		{
-			Debug.LogError($"Prefab for NodeType {newType} not assigned.");
-			return;
-		}
+        // Get the new prefab based on the desired type
+        GameObject newPrefab = GetPrefabForNodeType(newType);
+        if (newPrefab == null)
+        {
+            Debug.LogError($"Prefab for NodeType {newType} not assigned.");
+            return;
+        }
 
-		// Save the current node's properties
-		Vector3 position = currentNode.transform.position;
-		string nodeName = currentNode.name;
+        // Save the current node's properties
+        Vector3 position = currentNode.transform.position;
+        string nodeName = currentNode.name;
 
-		// Destroy the old node
-		Destroy(currentNode);
+        // Destroy the old node
+        Destroy(currentNode);
 
-		// Instantiate the new prefab
-		GameObject newNode = Instantiate(newPrefab, position, Quaternion.identity);
-		newNode.name = nodeName;
+        // Instantiate the new prefab
+        GameObject newNode = Instantiate(newPrefab, position, Quaternion.identity);
+        newNode.name = nodeName;
 
-		// Initialize the new node
-		NodeComponent nodeComponent = newNode.GetComponent<NodeComponent>();
-		if (nodeComponent != null)
-		{
-			nodeComponent.Initialize(nodeId, nodeName, newType);
-		}
+        // Initialize the new node
+        NodeComponent nodeComponent = newNode.GetComponent<NodeComponent>();
+        if (nodeComponent != null)
+        {
+            nodeComponent.Initialize(nodeId, nodeName, newType);
+        }
 
-		// Update the nodeInstances dictionary
-		nodeInstances[nodeId] = newNode;
+        // Update the nodeInstances dictionary
+        nodeInstances[nodeId] = newNode;
 
-		Debug.Log($"Converted Node {nodeId} to {newType}.");
-	}
+        Debug.Log($"Converted Node {nodeId} to {newType}.");
+    }
 
 	public void CheckAndRevertSpecialNodes(int currentOrder)
 	{
