@@ -152,45 +152,69 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void ConvertNodeToPrefab(int nodeId, NodeType newType)
-    {
-        if (!nodeInstances.TryGetValue(nodeId, out GameObject currentNode))
-        {
-            Debug.LogError($"Node with ID {nodeId} not found for conversion.");
-            return;
-        }
+	public void ConvertNodeToPrefab(int nodeId, NodeType newType)
+	{
+		if (!nodeInstances.TryGetValue(nodeId, out GameObject currentNode))
+		{
+			Debug.LogError($"Node with ID {nodeId} not found for conversion.");
+			return;
+		}
 
-        // Get the new prefab based on the desired type
-        GameObject newPrefab = GetPrefabForNodeType(newType);
-        if (newPrefab == null)
-        {
-            Debug.LogError($"Prefab for NodeType {newType} not assigned.");
-            return;
-        }
+		// Get the new prefab based on the desired type
+		GameObject newPrefab = GetPrefabForNodeType(newType);
+		if (newPrefab == null)
+		{
+			Debug.LogError($"Prefab for NodeType {newType} not assigned.");
+			return;
+		}
 
-        // Save the current node's properties
-        Vector3 position = currentNode.transform.position;
-        string nodeName = currentNode.name;
+		// Save the current node's properties
+		Vector3 position = currentNode.transform.position;
+		string nodeName = currentNode.name;
 
-        // Destroy the old node
-        Destroy(currentNode);
+		// Check if the node was visited (chest sprite hidden)
+		bool isVisited = false;
+		Transform chestIndicator = currentNode.transform.Find("ChestIndicator");
+		if (chestIndicator != null)
+		{
+			SpriteRenderer chestRenderer = chestIndicator.GetComponent<SpriteRenderer>();
+			if (chestRenderer != null)
+			{
+				isVisited = !chestRenderer.enabled;
+			}
+		}
 
-        // Instantiate the new prefab
-        GameObject newNode = Instantiate(newPrefab, position, Quaternion.identity);
-        newNode.name = nodeName;
+		// Destroy the old node
+		Destroy(currentNode);
 
-        // Initialize the new node
-        NodeComponent nodeComponent = newNode.GetComponent<NodeComponent>();
-        if (nodeComponent != null)
-        {
-            nodeComponent.Initialize(nodeId, nodeName, newType);
-        }
+		// Instantiate the new prefab
+		GameObject newNode = Instantiate(newPrefab, position, Quaternion.identity);
+		newNode.name = nodeName;
 
-        // Update the nodeInstances dictionary
-        nodeInstances[nodeId] = newNode;
+		// Initialize the new node
+		NodeComponent nodeComponent = newNode.GetComponent<NodeComponent>();
+		if (nodeComponent != null)
+		{
+			nodeComponent.Initialize(nodeId, nodeName, newType);
+		}
 
-        Debug.Log($"Converted Node {nodeId} to {newType}.");
-    }
+		// Update the chest indicator based on the visited state
+		Transform newChestIndicator = newNode.transform.Find("ChestIndicator");
+		if (newChestIndicator != null)
+		{
+			SpriteRenderer newChestRenderer = newChestIndicator.GetComponent<SpriteRenderer>();
+			if (newChestRenderer != null)
+			{
+				newChestRenderer.enabled = !isVisited; // Show chest if not visited
+			}
+		}
+
+		// Update the nodeInstances dictionary
+		nodeInstances[nodeId] = newNode;
+
+		Debug.Log($"Converted Node {nodeId} to {newType}.");
+	}
+
 
 	public void CheckAndRevertSpecialNodes(int currentOrder)
 	{
