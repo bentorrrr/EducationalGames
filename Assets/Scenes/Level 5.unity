@@ -575,11 +575,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1399ce2b57f9ad7498e5eb8c36c7698d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  graphData: {fileID: 11400000, guid: c5fad5035a5ef6041ae98bdc9b00963b, type: 2}
+  graphData: {fileID: 11400000, guid: d9d40f5f6b837fe4a816a6a6dfbea74d, type: 2}
   playerManager: {fileID: 1126510274}
   normalNodePrefab: {fileID: 7130828414727599401, guid: 6fd58be03be91d24ea666a73b5e49919, type: 3}
   blueSpecialNodePrefab: {fileID: 7130828414727599401, guid: 81a48021f8e13e947a1d94d6a0df108b, type: 3}
+  greenSpecialNodePrefab: {fileID: 7130828414727599401, guid: 133eb1aaccf62cd4ea8e42d088766500, type: 3}
   orangeSpecialNodePrefab: {fileID: 7130828414727599401, guid: d305dbb121bfd0a4ba6a508097162637, type: 3}
+  purpleSpecialNodePrefab: {fileID: 7130828414727599401, guid: f6ab08149d747af43a08f00efe82cf72, type: 3}
 --- !u!4 &505533292
 Transform:
   m_ObjectHideFlags: 0

@@ -154,7 +154,7 @@ public class PlayerManager : MonoBehaviour
 		{
 			switch (targetNode.nodeType)
 			{
-				case NodeType.BlueSpecial: // Blue Node C
+				case NodeType.BlueSpecial: // Blue Node
 					if (currentOrder == 2)
 					{
 						Debug.Log($"Blue Special Node reached at order {currentOrder}. Reducing total weight by 2.");
@@ -162,11 +162,27 @@ public class PlayerManager : MonoBehaviour
 					}
 					break;
 
-				case NodeType.OrangeSpecial: // Orange Node E
+				case NodeType.GreenSpecial: // Green Node
+					if (currentOrder == 4)
+					{
+						Debug.Log($"Green Special Node reached at order {currentOrder}. Reducing total weight by 4.");
+						totalWeightUsed = Mathf.Max(totalWeightUsed - 4, 0);
+					}
+					break;
+
+				case NodeType.OrangeSpecial: // Orange Node
 					if (currentOrder == 5)
 					{
 						Debug.Log($"Orange Special Node reached at order {currentOrder}. Reducing total weight by 4.");
-						totalWeightUsed = Mathf.Max(totalWeightUsed - 4, 0); // Ensure total weight is non-negative
+						totalWeightUsed = Mathf.Max(totalWeightUsed - 4, 0);
+					}
+					break;
+
+				case NodeType.PurpleSpecial: // Purple Node
+					if (currentOrder == 6)
+					{
+						Debug.Log($"Purple Special Node reached at order {currentOrder}. Reducing total weight by 2.");
+						totalWeightUsed = Mathf.Max(totalWeightUsed - 2, 0);
 					}
 					break;
 			}
