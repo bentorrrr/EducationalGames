@@ -470,7 +470,9 @@ MonoBehaviour:
   playerManager: {fileID: 1126510274}
   normalNodePrefab: {fileID: 7130828414727599401, guid: 6fd58be03be91d24ea666a73b5e49919, type: 3}
   blueSpecialNodePrefab: {fileID: 7130828414727599401, guid: 81a48021f8e13e947a1d94d6a0df108b, type: 3}
+  greenSpecialNodePrefab: {fileID: 7130828414727599401, guid: 133eb1aaccf62cd4ea8e42d088766500, type: 3}
   orangeSpecialNodePrefab: {fileID: 7130828414727599401, guid: d305dbb121bfd0a4ba6a508097162637, type: 3}
+  purpleSpecialNodePrefab: {fileID: 7130828414727599401, guid: f6ab08149d747af43a08f00efe82cf72, type: 3}
 --- !u!4 &505533292
 Transform:
   m_ObjectHideFlags: 0

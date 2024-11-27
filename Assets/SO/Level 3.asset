@@ -31,7 +31,7 @@ MonoBehaviour:
     position: {x: 0, y: 0}
   - nodeName: E
     nodeId: 4
-    nodeType: 2
+    nodeType: 3
     position: {x: -4.2, y: -7}
   - nodeName: F
     nodeId: 5
