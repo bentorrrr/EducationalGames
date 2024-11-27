@@ -11,11 +11,6 @@ public class LevelManager : MonoBehaviour
 	public GameObject blueSpecialNodePrefab;
 	public GameObject orangeSpecialNodePrefab;
 
-	// Edge sprites for different weights
-	public Sprite weight1Sprite;
-	public Sprite weight2Sprite;
-	public Sprite weight3Sprite;
-
 	private Dictionary<int, GameObject> nodeInstances;
 
 	void Start()
@@ -65,32 +60,63 @@ public class LevelManager : MonoBehaviour
 	{
 		// Create an empty GameObject for the edge
 		GameObject edgeObject = new GameObject("Edge");
+		edgeObject.transform.SetParent(transform); // Optional: Parent it for better hierarchy management
 
-		// Set the position between start and end nodes
-		edgeObject.transform.position = (start + end) / 2;
+		// Add LineRenderer component
+		LineRenderer lineRenderer = edgeObject.AddComponent<LineRenderer>();
 
-		// Add SpriteRenderer to the edge to display the sprite
-		SpriteRenderer spriteRenderer = edgeObject.AddComponent<SpriteRenderer>();
-		spriteRenderer.sprite = GetSpriteByWeight(weight);
+		// Configure the LineRenderer
+		lineRenderer.positionCount = 2; // A line has two points
+		lineRenderer.SetPosition(0, start); // Start point
+		lineRenderer.SetPosition(1, end);   // End point
 
-		// Rotate and scale the edge to connect the start and end points
-		Vector3 direction = end - start;
-		edgeObject.transform.right = direction; // Rotate to face the direction
+		lineRenderer.startWidth = GetLineWidthByWeight(weight); // Width at the start of the line
+		lineRenderer.endWidth = GetLineWidthByWeight(weight);   // Width at the end of the line
 
-		// Set size based on distance between nodes
-		spriteRenderer.size = new Vector2(direction.magnitude, spriteRenderer.size.y);
+		lineRenderer.material = new Material(Shader.Find("Sprites/Default")); // Assign a default material
+		lineRenderer.startColor = GetLineColorByWeight(weight); // Color at the start
+		lineRenderer.endColor = GetLineColorByWeight(weight);   // Color at the end
 	}
 
-	Sprite GetSpriteByWeight(int weight)
+	float GetLineWidthByWeight(int weight)
 	{
 		switch (weight)
 		{
-			case 1: return weight1Sprite;
-			case 2: return weight2Sprite;
-			case 3: return weight3Sprite;
+			case 1: return 0.2f; // Thin line
+			case 2: return 0.3f;  // Medium line
+			case 3: return 0.4f; // Thick line
+			default: return 0.2f; // Default width
+		}
+	}
+
+	Color GetLineColorByWeight(int weight)
+	{
+		string hexColor;
+
+		switch (weight)
+		{
+			case 1:
+				hexColor = "#0f6742";
+				break;
+			case 2:
+				hexColor = "#177085";
+				break;
+			case 3:
+				hexColor = "#763f3c";
+				break;
 			default:
-				Debug.LogWarning($"Unexpected weight: {weight}. Defaulting to weight 1 sprite.");
-				return weight1Sprite;
+				hexColor = "#3c3e57";
+				break;
+		}
+
+		if (ColorUtility.TryParseHtmlString(hexColor, out Color color))
+		{
+			return color;
+		}
+		else
+		{
+			Debug.LogWarning($"Invalid hex color: {hexColor}. Defaulting to white.");
+			return Color.white;
 		}
 	}
 
