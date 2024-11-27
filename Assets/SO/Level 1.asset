@@ -15,15 +15,19 @@ MonoBehaviour:
   nodes:
   - nodeName: A
     nodeId: 0
+    nodeType: 0
     position: {x: -8, y: 5}
   - nodeName: B
     nodeId: 1
+    nodeType: 0
     position: {x: -8, y: -5}
   - nodeName: C
     nodeId: 2
+    nodeType: 0
     position: {x: 8, y: 5}
   - nodeName: D
     nodeId: 3
+    nodeType: 0
     position: {x: 8, y: -5}
   edges:
   - startNodeId: 0
@@ -44,7 +48,7 @@ MonoBehaviour:
   - startNodeId: 2
     endNodeId: 3
     weight: 1
-  weightLimit: 5
-  oneStarWeight: 1
-  twoStarWeight: 1
   threeStarWeight: 4
+  twoStarWeight: 1
+  oneStarWeight: 1
+  weightLimit: 5
