@@ -20,7 +20,7 @@ MonoBehaviour:
   - nodeName: B
     nodeId: 1
     nodeType: 0
-    position: {x: 0, y: 6.7}
+    position: {x: 0, y: 5.5}
   - nodeName: C
     nodeId: 2
     nodeType: 1

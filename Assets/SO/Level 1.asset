@@ -16,7 +16,7 @@ MonoBehaviour:
   - nodeName: A
     nodeId: 0
     nodeType: 0
-    position: {x: -8, y: 5}
+    position: {x: -8, y: 3}
   - nodeName: B
     nodeId: 1
     nodeType: 0
@@ -24,7 +24,7 @@ MonoBehaviour:
   - nodeName: C
     nodeId: 2
     nodeType: 0
-    position: {x: 8, y: 5}
+    position: {x: 8, y: 3}
   - nodeName: D
     nodeId: 3
     nodeType: 0

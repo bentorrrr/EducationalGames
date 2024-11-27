@@ -12,30 +12,15 @@ public class LevelManager : MonoBehaviour
     public GameObject blueSpecialNodePrefab;
     public GameObject orangeSpecialNodePrefab;
 
-    // Line renderer for edges
-    public LineRenderer lineRenderer;
-
-
-    // Edge sprites for different weights
-    public Sprite weight1Sprite;
-    public Sprite weight2Sprite;
-    public Sprite weight3Sprite;
-
-    private Dictionary<int, GameObject> nodeInstances;
+	private Dictionary<int, GameObject> nodeInstances;
 
     void Start()
     {
         InitializeGraph();
         SpawnPlayerAtFirstNode();
-        lineRenderer = GetComponent<LineRenderer>();
     }
 
-    void SetUpLineRenderer()
-    {
-        lineRenderer.positionCount = graphData.edges.Count;
-        lineRenderer.startWidth = 0.1f;
-        lineRenderer.endWidth = 0.1f;
-    }
+
     void InitializeGraph()
     {
         nodeInstances = new Dictionary<int, GameObject>();
@@ -59,56 +44,85 @@ public class LevelManager : MonoBehaviour
                 nodeComponent.Initialize(node.nodeId, node.nodeName, node.nodeType);
             }
 
-            nodeInstances[node.nodeId] = nodeObject;
-        }
-        SetUpLineRenderer();
-        int edgeCount = 0;
-        // Instantiate edges
-        foreach (var edge in graphData.edges)
-        {
-            Debug.Log(edge.startNodeId + " " + edge.endNodeId);
-            if (nodeInstances.TryGetValue(edge.startNodeId, out GameObject startNode) &&
-                nodeInstances.TryGetValue(edge.endNodeId, out GameObject endNode))
-            {
-                // CreateEdge(startNode.transform.position, endNode.transform.position, edge.weight);
-                lineRenderer.SetPosition(edgeCount++, startNode.transform.position);
-                lineRenderer.SetPosition(edgeCount++, endNode.transform.position);
-            }
-        }
+			nodeInstances[node.nodeId] = nodeObject;
+		}
+
+		// Instantiate edges
+		foreach (var edge in graphData.edges)
+		{
+			if (nodeInstances.TryGetValue(edge.startNodeId, out GameObject startNode) &&
+				nodeInstances.TryGetValue(edge.endNodeId, out GameObject endNode))
+			{
+                CreateEdge(startNode.transform.position, endNode.transform.position, edge.weight);
+			}
+		}
+	}
+
+	void CreateEdge(Vector3 start, Vector3 end, int weight)
+	{
+		// Create an empty GameObject for the edge
+		GameObject edgeObject = new GameObject("Edge");
+		edgeObject.transform.SetParent(transform); // Optional: Parent it for better hierarchy management
+
+		// Add LineRenderer component
+		LineRenderer lineRenderer = edgeObject.AddComponent<LineRenderer>();
+
+		// Configure the LineRenderer
+		lineRenderer.positionCount = 2; // A line has two points
+		lineRenderer.SetPosition(0, start); // Start point
+		lineRenderer.SetPosition(1, end);   // End point
+
+        lineRenderer.startWidth = 0.3f; //GetLineWidthByWeight(weight); // Width at the start of the line
+        lineRenderer.endWidth = 0.3f; //GetLineWidthByWeight(weight);   // Width at the end of the line
+
+		lineRenderer.material = new Material(Shader.Find("Sprites/Default")); // Assign a default material
+		lineRenderer.startColor = GetLineColorByWeight(weight); // Color at the start
+		lineRenderer.endColor = GetLineColorByWeight(weight);   // Color at the end
+
+        lineRenderer.sortingLayerID = SortingLayer.NameToID("Lines");
     }
-    // Somewhere here
-    void CreateEdge(Vector3 start, Vector3 end, int weight)
-    {
-        // Create an empty GameObject for the edge
-        GameObject edgeObject = new GameObject("Edge");
 
-        // Set the position between start and end nodes
-        edgeObject.transform.position = (start + end) / 2;
+	//float GetLineWidthByWeight(int weight)
+	//{
+	//	switch (weight)
+	//	{
+	//		case 1: return 0.3f; // Thin line
+	//		case 2: return 0.3f;  // Medium line
+	//		case 3: return 0.3f; // Thick line
+	//		default: return 0.2f; // Default width
+	//	}
+	//}
 
-        // Add SpriteRenderer to the edge to display the sprite
-        SpriteRenderer spriteRenderer = edgeObject.AddComponent<SpriteRenderer>();
-        spriteRenderer.sprite = GetSpriteByWeight(weight);
+	Color GetLineColorByWeight(int weight)
+	{
+		string hexColor;
 
-        // Rotate and scale the edge to connect the start and end points
-        Vector3 direction = end - start;
-        edgeObject.transform.right = direction; // Rotate to face the direction
+		switch (weight)
+		{
+			case 1:
+				hexColor = "#0f6742";
+				break;
+			case 2:
+				hexColor = "#177085";
+				break;
+			case 3:
+				hexColor = "#763f3c";
+				break;
+			default:
+				hexColor = "#3c3e57";
+				break;
+		}
 
-        // Set size based on distance between nodes
-        spriteRenderer.size = new Vector2(direction.magnitude, spriteRenderer.size.y);
-    }
-
-    Sprite GetSpriteByWeight(int weight)
-    {
-        switch (weight)
-        {
-            case 1: return weight1Sprite;
-            case 2: return weight2Sprite;
-            case 3: return weight3Sprite;
-            default:
-                Debug.LogWarning($"Unexpected weight: {weight}. Defaulting to weight 1 sprite.");
-                return weight1Sprite;
-        }
-    }
+		if (ColorUtility.TryParseHtmlString(hexColor, out Color color))
+		{
+			return color;
+		}
+		else
+		{
+			Debug.LogWarning($"Invalid hex color: {hexColor}. Defaulting to white.");
+			return Color.white;
+		}
+	}
 
     private GameObject GetPrefabForNodeType(NodeType nodeType)
     {
