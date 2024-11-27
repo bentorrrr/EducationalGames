@@ -6,11 +6,12 @@ public class LevelManager : MonoBehaviour
     public GraphData graphData;
     public PlayerManager playerManager;
 
-
-    // Prefabs for different node types
-    public GameObject normalNodePrefab;
-    public GameObject blueSpecialNodePrefab;
-    public GameObject orangeSpecialNodePrefab;
+	// Prefabs for different node types
+	public GameObject normalNodePrefab;
+	public GameObject blueSpecialNodePrefab;
+	public GameObject greenSpecialNodePrefab;
+	public GameObject orangeSpecialNodePrefab;
+	public GameObject purpleSpecialNodePrefab;
 
 	private Dictionary<int, GameObject> nodeInstances;
 
@@ -124,18 +125,20 @@ public class LevelManager : MonoBehaviour
 		}
 	}
 
-    private GameObject GetPrefabForNodeType(NodeType nodeType)
-    {
-        switch (nodeType)
-        {
-            case NodeType.Normal: return normalNodePrefab;
-            case NodeType.BlueSpecial: return blueSpecialNodePrefab;
-            case NodeType.OrangeSpecial: return orangeSpecialNodePrefab;
-            default:
-                Debug.LogError($"Unknown NodeType: {nodeType}");
-                return null;
-        }
-    }
+	private GameObject GetPrefabForNodeType(NodeType nodeType)
+	{
+		switch (nodeType)
+		{
+			case NodeType.Normal: return normalNodePrefab;
+			case NodeType.BlueSpecial: return blueSpecialNodePrefab;
+			case NodeType.GreenSpecial: return greenSpecialNodePrefab;
+			case NodeType.OrangeSpecial: return orangeSpecialNodePrefab;
+			case NodeType.PurpleSpecial: return purpleSpecialNodePrefab;
+			default:
+				Debug.LogError($"Unknown NodeType: {nodeType}");
+				return null;
+		}
+	}
 
     void SpawnPlayerAtFirstNode()
     {
@@ -190,21 +193,31 @@ public class LevelManager : MonoBehaviour
         Debug.Log($"Converted Node {nodeId} to {newType}.");
     }
 
-    public void CheckAndRevertSpecialNodes(int currentOrder)
-    {
-        Debug.Log("Check and convert");
-        foreach (var node in graphData.nodes)
-        {
-            if (node.nodeType == NodeType.BlueSpecial && currentOrder >= 2)
-            {
-                Debug.Log("Blue");
-                ConvertNodeToPrefab(node.nodeId, NodeType.Normal);
-            }
-            else if (node.nodeType == NodeType.OrangeSpecial && currentOrder >= 5)
-            {
-                Debug.Log("Orange");
-                ConvertNodeToPrefab(node.nodeId, NodeType.Normal);
-            }
-        }
-    }
+	public void CheckAndRevertSpecialNodes(int currentOrder)
+	{
+		Debug.Log("Check and convert");
+		foreach (var node in graphData.nodes)
+		{
+			if (node.nodeType == NodeType.BlueSpecial && currentOrder >= 2)
+			{
+				Debug.Log("Blue");
+				ConvertNodeToPrefab(node.nodeId, NodeType.Normal);
+			}
+			else if (node.nodeType == NodeType.GreenSpecial && currentOrder >= 4)
+			{
+				Debug.Log("Green");
+				ConvertNodeToPrefab(node.nodeId, NodeType.Normal);
+			}
+			else if (node.nodeType == NodeType.OrangeSpecial && currentOrder >= 5)
+			{
+				Debug.Log("Orange");
+				ConvertNodeToPrefab(node.nodeId, NodeType.Normal);
+			}
+			else if (node.nodeType == NodeType.PurpleSpecial && currentOrder >= 6)
+			{
+				Debug.Log("Purple");
+				ConvertNodeToPrefab(node.nodeId, NodeType.Normal);
+			}
+		}
+	}
 }

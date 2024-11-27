@@ -7,10 +7,6 @@ public class NodeComponent : MonoBehaviour
 	public NodeType nodeType;
 	public string nodeName;
 
-	public GameObject normalNodeModel;
-	public GameObject blueSpecialNodeModel;
-	public GameObject orangeSpecialNodeModel;
-
 	private PlayerManager playerManager;
 
 	public void Initialize(int id, string name, NodeType type)
