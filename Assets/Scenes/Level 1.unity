@@ -185,6 +185,7 @@ MonoBehaviour:
   greenSpecialNodePrefab: {fileID: 0}
   orangeSpecialNodePrefab: {fileID: 7130828414727599401, guid: d305dbb121bfd0a4ba6a508097162637, type: 3}
   purpleSpecialNodePrefab: {fileID: 0}
+  visitParticleEffect: {fileID: 4125579267135529596, guid: 207de977a74907c42b05c487666d00c4, type: 3}
 --- !u!4 &505533292
 Transform:
   m_ObjectHideFlags: 0
