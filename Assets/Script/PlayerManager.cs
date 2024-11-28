@@ -20,14 +20,20 @@ public class PlayerManager : MonoBehaviour
     public GameObject levelFailedWindow;
     public TextMeshProUGUI weightUsedText;
     public TextMeshProUGUI weightLimitText;
+	public GameObject oneStarPic;
+	public GameObject twoStarPic;
+	public GameObject threeStarPic;
 
-    private GraphData graphData;
+	private GraphData graphData;
     private List<int> visitedNodes = new List<int>();
     private List<int> pathTaken = new List<int>();
 
     private bool isGameCompleted = false;
 
-    void Awake()
+	[Header("Energy Bar Manager")]
+	public EnergyBarManager energyBarManager;
+
+	void Awake()
     {
         graphData = FindObjectOfType<LevelManager>().graphData;
     }
@@ -36,7 +42,12 @@ public class PlayerManager : MonoBehaviour
     {
         UpdateScoreText();
 
-        if (levelCompleteWindow != null) levelCompleteWindow.SetActive(false);
+		if (energyBarManager != null)
+		{
+			energyBarManager.InitializeEnergyBar(graphData.weightLimit);
+		}
+
+		if (levelCompleteWindow != null) levelCompleteWindow.SetActive(false);
         if (levelFailedWindow != null) levelFailedWindow.SetActive(false);
     }
 
@@ -108,7 +119,12 @@ public class PlayerManager : MonoBehaviour
         UpdateScoreText();
         Debug.Log("Player score: " + totalWeightUsed);
 
-        if (!visitedNodes.Contains(targetNode.nodeId))
+		if (energyBarManager != null)
+		{
+			energyBarManager.UpdateEnergyBar(totalWeightUsed);
+		}
+
+		if (!visitedNodes.Contains(targetNode.nodeId))
         {
             visitedNodes.Add(targetNode.nodeId);
         }
@@ -238,7 +254,19 @@ public class PlayerManager : MonoBehaviour
             finalScoreText.text = "Final Score: " + totalWeightUsed;
             pathText.text = "Path Taken: " + string.Join(" -> ", pathTaken);
             int stars = CalculateStars();
-            Debug.Log("Stars Earned: " + stars);
+			switch (stars)
+            {
+                case 1:
+                    oneStarPic.SetActive(true);
+					break;
+				case 2:
+					twoStarPic.SetActive(true);
+					break;
+				case 3:
+					threeStarPic.SetActive(true);
+					break;
+			}
+			Debug.Log("Stars Earned: " + stars);
         }
     }
 
