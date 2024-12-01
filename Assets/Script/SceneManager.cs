@@ -5,28 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class SceneManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+	public static string targetScene;
+	public string loadingScreenSceneName = "LoadingScene"; // Set the name of the loading screen scene
+
+	public void LoadScene(string sceneName)
+	{
+		Debug.Log("Loading Scene: " + sceneName);
+		targetScene = sceneName;
+		UnityEngine.SceneManagement.SceneManager.LoadScene(loadingScreenSceneName);
+	}
+
+	public void ReloadScene()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public void LoadScene(string sceneName)
-    {
-        Debug.Log("Loading Scene: " + sceneName);
-        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
-    }
-
-    public void ReloadScene()
-    {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-    }
+		string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+		LoadScene(currentScene);
+	}
 
     public void QuitGame()
     {
