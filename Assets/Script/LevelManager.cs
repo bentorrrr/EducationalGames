@@ -15,7 +15,9 @@ public class LevelManager : MonoBehaviour
 
 	private Dictionary<int, GameObject> nodeInstances;
 
-    void Start()
+	public GameObject visitParticleEffect;
+
+	void Start()
     {
         InitializeGraph();
         SpawnPlayerAtFirstNode();
@@ -256,6 +258,11 @@ public class LevelManager : MonoBehaviour
 				{
 					chestRenderer.enabled = false; // Hide the chest sprite
 				}
+			}
+
+			if (visitParticleEffect != null)
+			{
+				Instantiate(visitParticleEffect, nodeObject.transform.position, Quaternion.identity);
 			}
 		}
 		else
