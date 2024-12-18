@@ -599,6 +599,8 @@ MonoBehaviour:
   moveSpeed: 10
   totalWeightUsed: 0
   currentOrder: 0
+  currentScene:
+    m_Handle: 0
   levelTextWin: {fileID: 1020682258}
   levelTextLose: {fileID: 7319341152161227876}
   scoreText: {fileID: 7319341152161227877}
@@ -6574,6 +6576,10 @@ PrefabInstance:
       propertyPath: m_HorizontalAlignment
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3932152837350411796, guid: b3848788b12cb0e49ae7f53f9f1cfbb0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: StageSelector
+      objectReference: {fileID: 0}
     - target: {fileID: 4955728880305054673, guid: b3848788b12cb0e49ae7f53f9f1cfbb0, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -6588,7 +6594,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6442635874529255624, guid: b3848788b12cb0e49ae7f53f9f1cfbb0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Level 2
+      value: 4Greedy
       objectReference: {fileID: 0}
     - target: {fileID: 7576467232829335976, guid: b3848788b12cb0e49ae7f53f9f1cfbb0, type: 3}
       propertyPath: m_IsActive
@@ -6608,7 +6614,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8499833060557331126, guid: b3848788b12cb0e49ae7f53f9f1cfbb0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: MainMenu
+      value: StageSelector
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

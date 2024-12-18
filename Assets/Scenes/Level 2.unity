@@ -5803,6 +5803,8 @@ MonoBehaviour:
   moveSpeed: 10
   totalWeightUsed: 0
   currentOrder: 0
+  currentScene:
+    m_Handle: 0
   levelTextWin: {fileID: 1364310294}
   levelTextLose: {fileID: 1364310293}
   scoreText: {fileID: 1086185231}
@@ -6086,7 +6088,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6442635874529255624, guid: b3848788b12cb0e49ae7f53f9f1cfbb0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Level 3
+      value: 6Special
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

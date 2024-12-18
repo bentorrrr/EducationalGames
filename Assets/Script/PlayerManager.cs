@@ -14,6 +14,8 @@ public class PlayerManager : MonoBehaviour
     public int totalWeightUsed = 0;
     public int currentOrder = 0;
 
+    public Scene currentScene;
+
 	public TextMeshProUGUI levelTextWin;
 	public TextMeshProUGUI levelTextLose;
 	public TextMeshProUGUI scoreText;
@@ -43,8 +45,8 @@ public class PlayerManager : MonoBehaviour
 
     void Start()
     {
-		Scene scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-		string sceneName = scene.name;
+		currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+		string sceneName = currentScene.name;
 		levelTextWin.text = sceneName;
 		levelTextLose.text = sceneName;
 
@@ -314,6 +316,7 @@ public class PlayerManager : MonoBehaviour
 					threeStarPic.SetActive(true);
 					break;
 			}
+            SaveLevelStatus(stars);
 			Debug.Log("Stars Earned: " + stars);
         }
     }
@@ -340,4 +343,29 @@ public class PlayerManager : MonoBehaviour
         else
             return 0;
     }
+
+	private void SaveLevelStatus(int starsEarned)
+	{
+		char levelNumberChar = currentScene.name[currentScene.name.Length - 1];
+        int levelNumber = levelNumberChar - '0';
+
+		PlayerPrefs.SetInt($"Level{levelNumber}Status", 2);
+		if (levelNumber < 4)
+		{
+			PlayerPrefs.SetInt($"Level{levelNumber + 1}Status", 1);
+			Debug.Log($"Unlock new level! Level: {levelNumber + 1}, Status: 1");
+		}
+
+		// Check if this level already has saved stars
+		int stars = PlayerPrefs.GetInt($"Level{levelNumber}Stars", 0);
+
+		// Update stars only if the new score is better
+		if (starsEarned > stars)
+		{
+			PlayerPrefs.SetInt($"Level{levelNumber}Stars", starsEarned);
+			PlayerPrefs.Save();
+			Debug.Log($"Progress saved! Level: {levelNumber}, Stars: {starsEarned}");
+		}
+	}
 }
+
