@@ -1,5 +1,4 @@
 using UnityEngine;
-using static TreeEditor.TreeEditorHelper;
 
 public class NodeComponent : MonoBehaviour
 {
