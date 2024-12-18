@@ -9,6 +9,7 @@ public class NodeComponent : MonoBehaviour
 
 	private PlayerManager playerManager;
 	public AudioSource audioSource;
+	public AudioClip specialSound;
 
 	public void Initialize(int id, string name, NodeType type)
 	{

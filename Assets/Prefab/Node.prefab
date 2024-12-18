@@ -136,6 +136,7 @@ MonoBehaviour:
   nodeType: 0
   nodeName: 
   audioSource: {fileID: 0}
+  specialSound: {fileID: 8300000, guid: b330ad1fedb92b043a7b35be90ba8cf5, type: 3}
 --- !u!212 &8971059641122457142
 SpriteRenderer:
   m_ObjectHideFlags: 0

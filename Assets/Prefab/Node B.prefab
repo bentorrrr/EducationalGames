@@ -136,6 +136,7 @@ MonoBehaviour:
   nodeType: 0
   nodeName: 
   audioSource: {fileID: 0}
+  specialSound: {fileID: 8300000, guid: b330ad1fedb92b043a7b35be90ba8cf5, type: 3}
 --- !u!212 &6858680755067580355
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -243,7 +244,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b330ad1fedb92b043a7b35be90ba8cf5, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 33960d94033a5f14c970939020fb4c90, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
