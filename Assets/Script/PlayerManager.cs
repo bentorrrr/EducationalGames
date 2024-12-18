@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -13,7 +14,9 @@ public class PlayerManager : MonoBehaviour
     public int totalWeightUsed = 0;
     public int currentOrder = 0;
 
-    public TextMeshProUGUI scoreText;
+	public TextMeshProUGUI levelTextWin;
+	public TextMeshProUGUI levelTextLose;
+	public TextMeshProUGUI scoreText;
     public GameObject levelCompleteWindow;
     public TextMeshProUGUI finalScoreText;
     public TextMeshProUGUI pathText;
@@ -35,12 +38,17 @@ public class PlayerManager : MonoBehaviour
 
 	void Awake()
     {
-        graphData = FindObjectOfType<LevelManager>().graphData;
+		graphData = FindObjectOfType<LevelManager>().graphData;
     }
 
     void Start()
     {
-        UpdateScoreText();
+		Scene scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+		string sceneName = scene.name;
+		levelTextWin.text = sceneName;
+		levelTextLose.text = sceneName;
+
+		UpdateScoreText();
 
 		if (energyBarManager != null)
 		{
@@ -91,19 +99,36 @@ public class PlayerManager : MonoBehaviour
         {
             Debug.LogWarning("No path between the current node and the selected node.");
         }
-    }
+	}
 
     IEnumerator MovePlayer(NodeComponent targetNode, int edgeWeight)
     {
         isMoving = true;
-        Debug.Log("Starting to move player");
+
+		Debug.Log("Starting to move player");
 
         Vector3 startPosition = playerInstance.transform.position;
         Vector3 targetPosition = targetNode.transform.position;
         float journeyLength = Vector3.Distance(startPosition, targetPosition);
         float startTime = Time.time;
+        float xDiff = startPosition.x - targetPosition.x;
 
-        while (Vector3.Distance(playerInstance.transform.position, targetPosition) > 0.01f)
+		PlayerAnimManager playerAnimManager = FindObjectOfType<PlayerAnimManager>();
+		if (playerAnimManager != null)
+		{
+            playerAnimManager.audioSource.Play();
+			playerAnimManager.animator.SetBool("isMoving", true);
+            if (xDiff > 0)
+            {
+                playerAnimManager.animator.SetBool("moveR", false);
+            }
+            else
+            {
+                playerAnimManager.animator.SetBool("moveR", true);
+            }
+		}
+
+		while (Vector3.Distance(playerInstance.transform.position, targetPosition) > 0.01f)
         {
             float distCovered = (Time.time - startTime) * moveSpeed;
             float fractionOfJourney = distCovered / journeyLength;
@@ -144,19 +169,23 @@ public class PlayerManager : MonoBehaviour
         }
 
         isMoving = false;
-
-        LevelManager levelManager = FindObjectOfType<LevelManager>();
-        if (levelManager != null)
-        {
-            Debug.Log("levelmanager");
-            levelManager.CheckAndRevertSpecialNodes(currentOrder);
-            levelManager.MarkNodeAsVisited(targetNode.nodeId);
+        if (playerAnimManager != null)
+		{
+			playerAnimManager.audioSource.Stop();
+			playerAnimManager.animator.SetBool("isMoving", false);
         }
+
+		LevelManager levelManager = FindObjectOfType<LevelManager>();
+        if (levelManager != null)
+		{
+			targetNode.PlaySound();
+			levelManager.CheckAndRevertSpecialNodes(currentOrder);
+            levelManager.MarkNodeAsVisited(targetNode.nodeId);
+		}
     }
 
     private void CheckWinCondition(int currentNodeId)
     {
-        // Check if the player has visited all nodes and returned to the start
         if (visitedNodes.Count == graphData.nodes.Count && currentNodeId == visitedNodes[0])
         {
             DisplayLevelComplete();
@@ -249,9 +278,14 @@ public class PlayerManager : MonoBehaviour
     {
         if (!isGameCompleted && levelCompleteWindow != null)
         {
-            isGameCompleted = true;
-            levelCompleteWindow.SetActive(true);
-            finalScoreText.text = "Final Score: " + totalWeightUsed;
+			if (totalWeightUsed >= graphData.weightLimit)
+			{
+				DisplayLevelFailed();
+				return;
+			}
+			isGameCompleted = true;
+			levelCompleteWindow.SetActive(true);
+            finalScoreText.text = totalWeightUsed.ToString();
             pathText.text = "Path Taken: " + string.Join(" -> ", pathTaken);
             int stars = CalculateStars();
 			switch (stars)
@@ -274,9 +308,9 @@ public class PlayerManager : MonoBehaviour
     {
         if (!isGameCompleted && levelFailedWindow != null)
         {
-            isGameCompleted = true; // Mark the game as completed
+            isGameCompleted = true;
             levelFailedWindow.SetActive(true);
-            weightUsedText.text = "Weight Used: " + totalWeightUsed;
+            weightUsedText.text = totalWeightUsed.ToString();
             weightLimitText.text = "Weight Limit: " + graphData.weightLimit;
         }
     }
