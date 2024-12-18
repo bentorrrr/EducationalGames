@@ -589,17 +589,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &866687427 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9833245896103343, guid: b3848788b12cb0e49ae7f53f9f1cfbb0, type: 3}
-  m_PrefabInstance: {fileID: 1364310286}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &872714025
 GameObject:
   m_ObjectHideFlags: 0
@@ -712,6 +701,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &986278727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 986278729}
+  - component: {fileID: 986278728}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &986278728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986278727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2967d7ca842a3214893126cf213329ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &986278729
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986278727}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1036220370
 GameObject:
   m_ObjectHideFlags: 0
@@ -5626,6 +5659,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1086185231 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9000686535299270992, guid: b3848788b12cb0e49ae7f53f9f1cfbb0, type: 3}
+  m_PrefabInstance: {fileID: 1364310286}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1116860953
 GameObject:
   m_ObjectHideFlags: 0
@@ -5761,7 +5805,7 @@ MonoBehaviour:
   currentOrder: 0
   levelTextWin: {fileID: 1364310294}
   levelTextLose: {fileID: 1364310293}
-  scoreText: {fileID: 866687427}
+  scoreText: {fileID: 1086185231}
   levelCompleteWindow: {fileID: 1590536424}
   finalScoreText: {fileID: 970566798}
   pathText: {fileID: 534147900}
@@ -6228,6 +6272,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1454059564}
   - component: {fileID: 1454059563}
+  - component: {fileID: 1454059565}
   m_Layer: 0
   m_Name: BGM
   m_TagString: Untagged
@@ -6346,6 +6391,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1454059565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454059562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d35b55fd4528e9246b01fd763e62fb1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1576907984
 GameObject:
   m_ObjectHideFlags: 0
@@ -6792,3 +6849,4 @@ SceneRoots:
   - {fileID: 19831448}
   - {fileID: 872714026}
   - {fileID: 1454059564}
+  - {fileID: 986278729}

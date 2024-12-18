@@ -140,7 +140,11 @@ public class PlayerManager : MonoBehaviour
         currentOrder = pathTaken.Count;
 
         totalWeightUsed += edgeWeight; // Update the player's score based on edge weight
-        AdjustWeightForSpecialNodes(targetNode.nodeId, currentOrder);
+        bool specialNodeActivated = AdjustWeightForSpecialNodes(targetNode.nodeId, currentOrder);
+        if (specialNodeActivated)
+        {
+            targetNode.audioSource.clip = targetNode.specialSound;
+        }
         UpdateScoreText();
         Debug.Log("Player score: " + totalWeightUsed);
 
@@ -160,7 +164,9 @@ public class PlayerManager : MonoBehaviour
         {
             if (totalWeightUsed > graphData.weightLimit)
             {
-                DisplayLevelFailed();
+				AudioSource audioSource = FindObjectOfType<BGM>().GetComponent<AudioSource>();
+				audioSource.Stop();
+				DisplayLevelFailed();
             }
             else
             {
@@ -188,11 +194,13 @@ public class PlayerManager : MonoBehaviour
     {
         if (visitedNodes.Count == graphData.nodes.Count && currentNodeId == visitedNodes[0])
         {
-            DisplayLevelComplete();
+			AudioSource bgmSource = FindObjectOfType<BGM>().GetComponent<AudioSource>();
+			bgmSource.Stop();
+			DisplayLevelComplete();
         }
     }
 
-    private void AdjustWeightForSpecialNodes(int targetNodeId, int currentOrder)
+    private bool AdjustWeightForSpecialNodes(int targetNodeId, int currentOrder)
     {
         NodeData targetNode = graphData.nodes.Find(n => n.nodeId == targetNodeId);
 
@@ -203,8 +211,9 @@ public class PlayerManager : MonoBehaviour
                 case NodeType.BlueSpecial: // Blue Node
                     if (currentOrder == 2)
                     {
-                        Debug.Log($"Blue Special Node reached at order {currentOrder}. Reducing total weight by 2.");
+						Debug.Log($"Blue Special Node reached at order {currentOrder}. Reducing total weight by 2.");
                         totalWeightUsed = Mathf.Max(totalWeightUsed - 2, 0); // Ensure total weight is non-negative
+                        return true;
                     }
                     break;
 
@@ -213,7 +222,8 @@ public class PlayerManager : MonoBehaviour
                     {
                         Debug.Log($"Green Special Node reached at order {currentOrder}. Reducing total weight by 4.");
                         totalWeightUsed = Mathf.Max(totalWeightUsed - 4, 0);
-                    }
+						return true;
+					}
                     break;
 
                 case NodeType.OrangeSpecial: // Orange Node
@@ -221,7 +231,8 @@ public class PlayerManager : MonoBehaviour
                     {
                         Debug.Log($"Orange Special Node reached at order {currentOrder}. Reducing total weight by 4.");
                         totalWeightUsed = Mathf.Max(totalWeightUsed - 4, 0);
-                    }
+						return true;
+					}
                     break;
 
                 case NodeType.PurpleSpecial: // Purple Node
@@ -229,10 +240,13 @@ public class PlayerManager : MonoBehaviour
                     {
                         Debug.Log($"Purple Special Node reached at order {currentOrder}. Reducing total weight by 2.");
                         totalWeightUsed = Mathf.Max(totalWeightUsed - 2, 0);
-                    }
+						return true;
+					}
                     break;
             }
+            return false;
         }
+        return false;
     }
 
     private int GetClosestNodeId(Vector3 position)
@@ -270,7 +284,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (scoreText != null)
         {
-            scoreText.text = "Total Distance" + "\n" + totalWeightUsed.ToString();  // Update the score text
+            scoreText.text = totalWeightUsed.ToString();
         }
     }
 
