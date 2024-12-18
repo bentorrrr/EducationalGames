@@ -8,6 +8,7 @@ public class NodeComponent : MonoBehaviour
 	public string nodeName;
 
 	private PlayerManager playerManager;
+	public AudioSource audioSource;
 
 	public void Initialize(int id, string name, NodeType type)
 	{
@@ -15,8 +16,8 @@ public class NodeComponent : MonoBehaviour
 		nodeName = name;
 		nodeType = type;
 
-		// Get reference to the PlayerManager
 		playerManager = FindObjectOfType<PlayerManager>();
+		audioSource = GetComponent<AudioSource>();
 	}
 
 	void OnMouseDown()
@@ -26,6 +27,28 @@ public class NodeComponent : MonoBehaviour
 		{
 			Debug.Log("Node clicked, attempting to move to node");
 			playerManager.MoveToNode(this);
+		}
+	}
+
+	public void PlaySound()
+	{
+		if (audioSource != null && audioSource.clip != null)
+		{
+			GameObject lingeringSoundObject = new GameObject("LingeringSound");
+			lingeringSoundObject.transform.position = transform.position;
+
+			AudioSource lingeringAudioSource = lingeringSoundObject.AddComponent<AudioSource>();
+			lingeringAudioSource.clip = audioSource.clip;
+			lingeringAudioSource.volume = audioSource.volume;
+			lingeringAudioSource.pitch = audioSource.pitch;
+			lingeringAudioSource.loop = false;
+			lingeringAudioSource.Play();
+
+			Destroy(lingeringSoundObject, lingeringAudioSource.clip.length);
+		}
+		else
+		{
+			Debug.LogWarning("AudioSource or AudioClip is missing. Unable to play lingering sound.");
 		}
 	}
 }
