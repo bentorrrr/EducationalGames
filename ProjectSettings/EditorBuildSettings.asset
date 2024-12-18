@@ -9,8 +9,29 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: f4d1ca2ca8d691644a615c355ef6a3eb
   - enabled: 1
+    path: Assets/Scenes/1TSPExplain.unity
+    guid: 0f6e6c746686b7e409a261d92e259596
+  - enabled: 1
+    path: Assets/Scenes/2HowToPlay.unity
+    guid: cf9f70144137fc943af05e8976be98e9
+  - enabled: 1
+    path: Assets/Scenes/3PathWeight.unity
+    guid: 0dbfa9dc613a72741912a5a3b3371428
+  - enabled: 1
+    path: Assets/Scenes/StageSelector.unity
+    guid: a10d3c8d8b13e994eb626f0aeb53890b
+  - enabled: 1
+    path: Assets/Scenes/4Greedy.unity
+    guid: 9df2eb3dacd500f4fb18c295c1f2c052
+  - enabled: 1
+    path: Assets/Scenes/5NN.unity
+    guid: 88b954c1d0a0b9d4b9988c73872656c8
+  - enabled: 1
     path: Assets/Scenes/Level 1.unity
     guid: 2ffaf7a42f387c941a90cbad31666f90
+  - enabled: 1
+    path: Assets/Scenes/6Special.unity
+    guid: 72cb6afa249ae7f4e9a38f7f71efdfd0
   - enabled: 1
     path: Assets/Scenes/Level 2.unity
     guid: 65d4eb384c7345843b527fefe9c54fbc

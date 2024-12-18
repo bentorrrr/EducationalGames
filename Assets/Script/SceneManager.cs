@@ -5,21 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class SceneManager : MonoBehaviour
 {
-	public static string targetScene;
-	public string loadingScreenSceneName = "LoadingScene"; // Set the name of the loading screen scene
+    public static string targetScene;
+    public string loadingScreenSceneName = "LoadingScene"; // Set the name of the loading screen scene
 
-	public void LoadScene(string sceneName)
-	{
-		Debug.Log("Loading Scene: " + sceneName);
-		targetScene = sceneName;
-		UnityEngine.SceneManagement.SceneManager.LoadScene(loadingScreenSceneName);
-	}
-
-	public void ReloadScene()
+    public void LoadScene(string sceneName)
     {
-		string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-		LoadScene(currentScene);
-	}
+        Debug.Log("Loading Scene: " + sceneName);
+        targetScene = sceneName;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(loadingScreenSceneName);
+    }
+
+    public void ReloadScene()
+    {
+        string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        LoadScene(currentScene);
+    }
 
     public void QuitGame()
     {
